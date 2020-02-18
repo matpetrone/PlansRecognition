@@ -15,27 +15,18 @@ def drawBoxes(img, annotations):
     plt.show()
 
 def drawContours(img, annotations):
-    thickness = 2
+    thickness = 4
     for a in annotations:
         contours = []
-        arr=np.array([])
-        for s in range(0,len(a),2):
+        arr=np.array([]).astype('int32')
+        for s in range(0,len(a['segmentation'][0]),2):
             ar =np.array([int(a['segmentation'][0][s]), int(a['segmentation'][0][s+1])])
             arr = np.append(arr,ar)
-        print (len(a['segmentation'][0])/2)
-        arr.reshape(int(len(a['segmentation'][0])/2),1,2)
+        arr = arr.reshape(int(len(a['segmentation'][0])/2),1,2)
         contours.append(arr)
-
-
-
-
-            #contours.append((int(a['segmentation'][0][s]),int(a['segmentation'][0][s+1])))
-
-
-        #image = cv2.drawContours(img, contours, -1, (0, 255, 0), 3)
-    #plt.imshow(image)
-    #plt.show()
-    print (contours)
+        image = cv2.drawContours(img, contours[0], -1, (0, 255, 0), thickness=thickness)
+    plt.imshow(image)
+    plt.show()
 
 dataset = Dataset()
 (img, ann) = dataset['001.png']
