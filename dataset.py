@@ -20,7 +20,10 @@ class Dataset():
                 annotations.append(a)
         return (img, annotations)
 
+
 dataset = Dataset()
 list = dataset['001.png']
-print(list[1][0]['bbox'])
+
+#print(list[1][0]['bbox'])
+#print(list[1][0]['segmentation'])
 
