@@ -25,6 +25,7 @@ def drawContours(img, annotations):
         arr = arr.reshape(int(len(a['segmentation'][0])/2),1,2)
         contours.append(arr)
         image = cv2.drawContours(img, contours[0], -1, (0, 255, 0), thickness=thickness)
+
     plt.imshow(image)
     plt.show()
 
