@@ -23,23 +23,16 @@ register_coco_instances("plans", {}, "./Flo2PlanAll-Seg/annotations/flo2plan_ins
 plans_metadata = MetadataCatalog.get("plans")
 dataset_dicts = DatasetCatalog.get("plans")
 
-# for d in random.sample(dataset_dicts, 3):
-#     img = cv2.imread(d["file_name"])
-#     visualizer = Visualizer(img[:, :, ::-1], metadata=plans_metadata, scale=0.5)
-#     vis = visualizer.draw_dataset_dict(d)
-#     cv2.imshow('window1',vis.get_image()[:, :, ::-1])
-#     cv2.waitKey(delay=1000)
-
 cfg = get_cfg()
 cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
 cfg.DATASETS.TRAIN = ("plans",)
 cfg.DATASETS.TEST = ()
 cfg.DATALOADER.NUM_WORKERS = 4
 cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")  # Let training initialize from model zoo
-cfg.SOLVER.IMS_PER_BATCH = 1  #prima =2
+cfg.SOLVER.IMS_PER_BATCH = 16  #prima =2
 cfg.SOLVER.BASE_LR = 0.0001  # pick a good LR prima=0.00025 balloon , 0.02 nuts
-cfg.SOLVER.MAX_ITER = 100    # 300 iterations seems good enough for this toy dataset; you may need to train longer for a practical dataset
-cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128   # faster, and good enough for this toy dataset (default: 512)
+cfg.SOLVER.MAX_ITER = 400    # 300 iterations seems good enough for this toy dataset; you may need to train longer for a practical dataset
+cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 256   # faster, and good enough for this toy dataset (default: 512)
 cfg.MODEL.ROI_HEADS.NUM_CLASSES = 12  # only has one class (ballon)
 
 os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
@@ -49,10 +42,9 @@ trainer.train()
 
 
 cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")
-cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7   # set the testing threshold for this model
+cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5   # set the testing threshold for this model
 cfg.DATASETS.TEST = ("plans",)
 predictor = DefaultPredictor(cfg)
-
 
 
 for d in random.sample(dataset_dicts, 3):
