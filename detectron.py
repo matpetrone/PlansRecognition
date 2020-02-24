@@ -31,7 +31,7 @@ cfg.DATALOADER.NUM_WORKERS = 4
 cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")  # Let training initialize from model zoo
 cfg.SOLVER.IMS_PER_BATCH = 16  #prima =2
 cfg.SOLVER.BASE_LR = 0.0001  # pick a good LR prima=0.00025 balloon , 0.02 nuts
-cfg.SOLVER.MAX_ITER = 400    # 300 iterations seems good enough for this toy dataset; you may need to train longer for a practical dataset
+cfg.SOLVER.MAX_ITER = 300    # 300 iterations seems good enough for this toy dataset; you may need to train longer for a practical dataset
 cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 256   # faster, and good enough for this toy dataset (default: 512)
 cfg.MODEL.ROI_HEADS.NUM_CLASSES = 12  # only has one class (ballon)
 
@@ -58,3 +58,5 @@ for d in random.sample(dataset_dicts, 3):
     v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
     cv2.imshow("1",v.get_image()[:, :, ::-1])
     cv2.waitKey(delay=1)
+
+#modifica
