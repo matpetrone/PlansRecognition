@@ -115,7 +115,7 @@ def setup(args):
     cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")  # Let training initialize from model zoo
     cfg.SOLVER.IMS_PER_BATCH = 2  #prima =2
     cfg.SOLVER.BASE_LR = 0.0005  # pick a good LR prima=0.00025 balloon , 0.02 nuts
-    cfg.SOLVER.MAX_ITER = 226*50    # 300 iterations seems good enough for this toy dataset; you may need to train longer for a practical dataset
+    cfg.SOLVER.MAX_ITER = 226*200    # 300 iterations seems good enough for this toy dataset; you may need to train longer for a practical dataset
     cfg.TEST.EVAL_PERIOD = 226
     cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128   # faster, and good enough for this toy dataset (default: 512)
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 12  # only has one class (ballon)
@@ -163,6 +163,7 @@ def main(args):
 
 
 if __name__ == "__main__":
+    output = open('output_results.txt','w').close()
     args = default_argument_parser().parse_args()
     print("Command Line Args:", args)
     launch(
